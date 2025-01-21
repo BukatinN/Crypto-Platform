@@ -1,0 +1,48 @@
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tab-navigation {
+  display: flex;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ccc;
+}
+
+.tab-navigation button {
+  flex: 1;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-navigation button:hover {
+  background-color: #e0e0e0;
+}
+
+.tab-navigation button.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.tab-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.placeholder {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-top: 50px;
+}

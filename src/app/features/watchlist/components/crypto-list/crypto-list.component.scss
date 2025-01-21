@@ -1,0 +1,10 @@
+.dx-data-grid .dx-row td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.dx-data-grid .dx-row td app-crypto-chart {
+  height: 100px;
+}

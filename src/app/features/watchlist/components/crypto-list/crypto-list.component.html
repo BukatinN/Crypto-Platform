@@ -1,0 +1,30 @@
+<dx-data-grid
+  [dataSource]="cryptocurrencies$ | async"
+  [columns]="columns"
+  [showBorders]="true"
+  [allowColumnResizing]="true"
+  [columnAutoWidth]="false"
+  [sorting]="{ mode: 'single' }"
+  (onRowPrepared)="onRowPrepared($event)"
+>
+  <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+
+  <div *dxTemplate="let cellData of 'chartCellTemplate'">
+    <dx-sparkline
+      [dataSource]="cellData.data.priceHistory"
+      argumentField="date"
+      valueField="price"
+      type="line"
+      [showMinMax]="true"
+      minColor="#f00"
+      maxColor="#2ab71b"
+      [pointSize]="3">
+    </dx-sparkline>
+  </div>
+</dx-data-grid>
+
+<dx-load-panel
+  [visible]="loading"
+  message="Loading cryptocurrencies..."
+  shadingColor="rgba(0,0,0,0.4)"
+></dx-load-panel>
