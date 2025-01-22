@@ -1,48 +1,62 @@
+:host {
+  background: var(--header-bg);
+  color: var(--header-text);
+
+  --header-bg: #ffffff;
+  --header-text: #000000;
+
+  body.dark-theme & {
+    --header-bg: #1f1f1f;
+    --header-text: #ffffff;
+  }
+}
+
 .main-panel {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
+  width: 200px;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.tab-navigation {
-  display: flex;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #ccc;
-}
-
-.tab-navigation button {
-  flex: 1;
-  padding: 10px 15px;
-  background: none;
-  border: none;
-  cursor: pointer;
+.main-panel .menu-item {
+  padding: 15px 20px;
+  text-align: left;
+  color: #333;
+  text-decoration: none;
   font-size: 16px;
-  transition: background-color 0.3s, color 0.3s;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
 }
 
-.tab-navigation button:hover {
+.main-panel .menu-item:hover {
   background-color: #e0e0e0;
 }
 
-.tab-navigation button.active {
-  background-color: #007bff;
-  color: white;
+.main-panel .menu-item.active {
+  background-color: #d1e4f1;
   font-weight: bold;
 }
 
-.tab-content {
-  flex: 1;
-  padding: 20px;
-  background-color: #fff;
-  overflow-y: auto;
+.layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--header-bg, #f8f9fa);
 }
 
-.placeholder {
-  font-size: 18px;
-  color: #666;
-  text-align: center;
-  margin-top: 50px;
+.sidebar {
+  width: 200px;
+  background-color: var(--header-bg, #f8f9fa);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
 }

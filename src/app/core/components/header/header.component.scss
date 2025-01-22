@@ -1,0 +1,33 @@
+:host {
+  background: var(--header-bg);
+  color: var(--header-text);
+
+  --header-bg: #ffffff;
+  --header-text: #000000;
+
+  body.dark-theme & {
+    --header-bg: #1f1f1f;
+    --header-text: #ffffff;
+  }
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--header-bg, #f8f9fa);
+  border-bottom: 1px solid #ddd;
+
+  .logo h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--header-text, #000);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}

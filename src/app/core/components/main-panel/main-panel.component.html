@@ -1,23 +1,13 @@
-<div class="main-panel">
-  <nav class="tab-navigation">
-    <button
-      *ngFor="let tab of tabs; let i = index"
-      [class.active]="i === activeTabIndex"
-      (click)="selectTab(i)"
-    >
-      {{ tab.label }}
-    </button>
-  </nav>
-  <div class="tab-content">
-    <ng-container [ngSwitch]="activeTabIndex">
-      <div *ngSwitchCase="0">
-      </div>
-      <div *ngSwitchCase="1">
-        <div class="placeholder">Content for Tab 2</div>
-      </div>
-      <div *ngSwitchCase="2">
-        <div class="placeholder">Content for Tab 3</div>
-      </div>
-    </ng-container>
+<div class="layout-container">
+  <div class="sidebar">
+    <dx-list
+      [items]="menuItems"
+      displayExpr="text"
+      [width]="200"
+      (onItemClick)="onMenuItemClick($event)"
+    ></dx-list>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
   </div>
 </div>

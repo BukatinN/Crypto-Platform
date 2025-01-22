@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-main-panel',
@@ -6,14 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './main-panel.component.scss',
 })
 export class MainPanelComponent {
-  tabs = [
-    { label: 'Watchlist' },
-    { label: 'Tab 2' },
-    { label: 'Tab 3' },
+  menuItems = [
+    { text: 'Watchlist', route: '/watchlist' },
+    { text: 'Converter', route: '/converter' },
+    { text: 'Wallet', route: '/wallet' }
   ];
-  activeTabIndex = 0;
 
-  selectTab(index: number) {
-    this.activeTabIndex = index;
+  constructor(private router: Router) {}
+
+  onMenuItemClick(event: any): void {
+    this.router.navigate([event.itemData.route]);
   }
 }

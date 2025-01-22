@@ -1,1 +1,22 @@
+/* Светлая тема */
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --header-bg: #f1f1f1;
+  --menu-bg: #f8f9fa;
+}
 
+/* Темная тема */
+body.dark-theme {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --header-bg: #1f1f1f;
+  --menu-bg: #222222;
+}
+
+/* Общие стили для body */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
