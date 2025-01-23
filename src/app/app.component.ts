@@ -6,7 +6,14 @@ import {ThemeService} from "./core/services/theme.service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'crypto-platform';
 
+  constructor(private themeService: ThemeService) {
+    //this.themeService.setTheme('light'); // или 'dark'
+  }
+
+  ngOnInit(){
+    //this.themeService.applyTheme();
+  }
 }
