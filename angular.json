@@ -27,16 +27,24 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/devextreme/dist/css/icons",
+                "output": "assets/devextreme-themes/icons"
+              },
+              {
+                "glob": "dx.*.css",
+                "input": "node_modules/devextreme/dist/css",
+                "output": "assets/devextreme-themes"
               }
             ],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/devextreme/dist/css/dx.common.css",
-              "node_modules/devextreme/dist/css/dx.light.css",
-              "node_modules/devextreme/dist/css/dx.dark.css",
               "src/styles.scss"
             ],
             "scripts": []

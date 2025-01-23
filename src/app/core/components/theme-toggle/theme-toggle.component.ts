@@ -74,7 +74,7 @@ import {ThemeService} from "../../services/theme.service";
         }
       }
     }
-  `]
+  `],
 })
 export class ThemeToggleComponent {
   isDarkMode = false;
@@ -86,6 +86,6 @@ export class ThemeToggleComponent {
   toggleTheme(): void {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setTheme(this.isDarkMode ? 'dark' : 'light');
-    console.log(localStorage.getItem('themeViewerAngular'));
+    //console.log(localStorage.getItem('themeViewerAngular'));
   }
 }
