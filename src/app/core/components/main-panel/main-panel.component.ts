@@ -1,21 +1,33 @@
-import {Component} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-main-panel',
   templateUrl: './main-panel.component.html',
   styleUrl: './main-panel.component.scss',
 })
-export class MainPanelComponent {
+export class MainPanelComponent implements OnInit{
   menuItems = [
-    { text: 'Watchlist', route: '/watchlist' },
-    { text: 'Converter', route: '/converter' },
-    { text: 'Wallet', route: '/wallet' }
+    { title: 'Watchlist', route: '/watchlist' },
+    { title: 'Converter', route: '/converter' },
+    { title: 'Wallet', route: '/wallet' }
   ];
+  selectedIndex = 0;
 
   constructor(private router: Router) {}
 
-  onMenuItemClick(event: any): void {
-    this.router.navigate([event.itemData.route]);
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.selectedIndex = this.menuItems.findIndex(
+          (item) => item.route === event.urlAfterRedirects
+        );
+      }
+    });
+  }
+
+  onTabChange(event: any): void {
+    const route = this.menuItems[event.component.option('selectedIndex')].route;
+    this.router.navigate([route]);
   }
 }

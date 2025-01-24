@@ -15,20 +15,35 @@
 
 .layout-container {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background-color: var(--bg, #f8f9fa);
 }
 
 .sidebar {
+  overflow-y: auto;
   width: 200px;
+  max-height: 100vh;
   background-color: var(--panel-bg, #f8f9fa);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-
 }
 
 .content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+.dx-tab-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.dx-tab-panel .dx-tabs {
+  flex-direction: column;
+  width: 200px;
+}
+
+.dx-tab-panel .dx-tab-content {
+  flex: 1;
 }

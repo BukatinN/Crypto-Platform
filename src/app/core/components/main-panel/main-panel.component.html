@@ -1,11 +1,12 @@
 <div class="layout-container">
   <div class="sidebar">
-    <dx-list
-      [items]="menuItems"
-      displayExpr="text"
-      [width]="200"
-      (onItemClick)="onMenuItemClick($event)"
-    ></dx-list>
+    <dx-tab-panel
+      [dataSource]="menuItems"
+      [selectedIndex]="selectedIndex"
+      (onSelectionChanged)="onTabChange($event)"
+      [height]="400"
+    >
+    </dx-tab-panel>
   </div>
   <div class="content">
     <router-outlet></router-outlet>
