@@ -13,7 +13,7 @@
   }
 }
 
-.layout-container {
+.main-container {
   display: flex;
   height: 100%;
   width: 100%;
@@ -21,29 +21,15 @@
 }
 
 .sidebar {
-  overflow-y: auto;
-  width: 200px;
-  max-height: 100vh;
-  background-color: var(--panel-bg, #f8f9fa);
+  display: flex;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+::ng-deep  .dx-tabs-vertical {
+  min-width: 120px;
+}
+
 .content {
-  flex: 1;
   padding: 20px;
   overflow-y: auto;
-}
-
-.dx-tab-panel {
-  display: flex;
-  flex-direction: row;
-}
-
-.dx-tab-panel .dx-tabs {
-  flex-direction: column;
-  width: 200px;
-}
-
-.dx-tab-panel .dx-tab-content {
-  flex: 1;
 }

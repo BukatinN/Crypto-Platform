@@ -13,10 +13,9 @@ export class CryptoService {
   constructor( private http: HttpClient) {}
 
   getCryptoCurrencies(): Observable<Cryptocurrency[]> {
-    return this.http.get<{ data: ApiCryptocurrency[] }>(`/api/v1/cryptocurrency/listings/latest`, {
+    return this.http.get<{ data: ApiCryptocurrency[] }>(`${this.API_URL}/v1/cryptocurrency/listings/latest`, {
       headers: {
         'X-CMC_PRO_API_KEY': this.API_KEY,
-        'Access-Control-Allow-Origin': '*',
       },
       params: {limit: '50', convert: 'USD'},
     })
@@ -43,10 +42,44 @@ export class CryptoService {
     const history: number[] = [];
     let price = basePrice;
     for (let i = 0; i < 50; i++) {
-      const randomFactor  = Math.random() * 5 - 2.5;
+      const randomFactor  = Math.random() * 5 - 2.5; //сложные вычисления
       price += (price * randomFactor ) / 100;
       history.push(+price.toFixed(3));
     }
     return history;
+  }
+
+  priceConversion(amount: number, id: string | null, symbol: string | null, convert: string): Observable<number> {
+    const params: { [key: string]: string | number } = {
+      amount,
+      convert,
+    };
+
+    if (id) {
+      params['id'] = id;
+    } else if (symbol) {
+      params['symbol'] = symbol;
+    } else {
+      throw new Error('Необходимо указать либо id, либо symbol.');
+    }
+
+    return this.http.get<{ data: { quote: { [key: string]: { price: number } } } }>(`${this.API_URL}/v2/tools/price-conversion`, {
+      headers: {
+        'X-CMC_PRO_API_KEY': this.API_KEY,
+      },
+      params })
+      .pipe(
+        map(response => {
+          const conversion = response.data.quote[convert];
+          if (conversion) {
+            return conversion.price;
+          }
+          throw new Error('Конвертация не выполнена. Проверьте параметры запроса.');
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Ошибка при конвертации цены:', error);
+          return throwError(() => new Error('Не удалось выполнить конвертацию. Пожалуйста, проверьте соединение.'));
+        }),
+      );
   }
 }

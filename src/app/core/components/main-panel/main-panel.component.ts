@@ -8,9 +8,9 @@ import {NavigationEnd, Router} from "@angular/router";
 })
 export class MainPanelComponent implements OnInit{
   menuItems = [
-    { title: 'Watchlist', route: '/watchlist' },
-    { title: 'Converter', route: '/converter' },
-    { title: 'Wallet', route: '/wallet' }
+    { title: 'Watchlist', route: '/watchlist', icon: 'description' },
+    { title: 'Converter', route: '/converter', icon: 'sorted' },
+    { title: 'Wallet', route: '/wallet', icon: 'money' },
   ];
   selectedIndex = 0;
 
@@ -20,7 +20,7 @@ export class MainPanelComponent implements OnInit{
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.selectedIndex = this.menuItems.findIndex(
-          (item) => item.route === event.urlAfterRedirects
+          (item) => item.route === event.urlAfterRedirects,
         );
       }
     });

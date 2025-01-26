@@ -2,16 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ConverterRoutingModule } from './converter-routing.module';
-import { ConverterComponent } from './converter.component';
+import {ConverterComponent} from "./components/converter/converter.component";
+import {DxButtonModule, DxNumberBoxModule, DxSelectBoxModule, DxTextBoxModule} from "devextreme-angular";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+
 
 
 @NgModule({
   declarations: [
-    ConverterComponent
+    ConverterComponent,
   ],
-  imports: [
-    CommonModule,
-    ConverterRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        ConverterRoutingModule,
+        DxNumberBoxModule,
+        DxSelectBoxModule,
+        DxButtonModule,
+        DxTextBoxModule,
+        FormsModule,
+    ],
 })
 export class ConverterModule { }

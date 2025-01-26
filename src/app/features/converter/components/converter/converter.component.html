@@ -1,0 +1,28 @@
+<div class="converter">
+  <dx-select-box
+    [items]="cryptocurrencies"
+    displayExpr="name"
+    valueExpr="id"
+    [value]="selectedId"
+    (onValueChanged)="onSymbolChange($event)"
+    placeholder="Выберите валюту"
+  ></dx-select-box>
+
+  <dx-number-box
+    [(ngModel)]="amount"
+    placeholder="Введите количество"
+    [min]="0"
+  ></dx-number-box>
+
+  <dx-select-box
+    [items]="['USD', 'EUR', 'GBP']"
+    [(ngModel)]="convertTo"
+    placeholder="Конвертировать в"
+  ></dx-select-box>
+
+  <button (click)="convert()">Конвертировать</button>
+
+  <div *ngIf="convertedPrice !== null">
+    <p>Результат: {{ convertedPrice }} {{ convertTo }}</p>
+  </div>
+</div>

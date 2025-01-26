@@ -1,15 +1,17 @@
-<div class="layout-container">
-  <div class="sidebar">
-    <dx-tab-panel
+<div class="main-container">
+    <dx-tab-panel class="sidebar"
+      width="100%"
       [dataSource]="menuItems"
       [selectedIndex]="selectedIndex"
       (onSelectionChanged)="onTabChange($event)"
-      [height]="400"
+      [tabsPosition]="'left'"
+      [iconPosition]="'end'"
     >
+      <div *dxTemplate="let item of 'item'">
+        <div class="content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </dx-tab-panel>
-  </div>
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
 </div>
 
