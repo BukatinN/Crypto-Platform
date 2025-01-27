@@ -1,28 +1,89 @@
-<div class="converter">
-  <dx-select-box
-    [items]="cryptocurrencies"
-    displayExpr="name"
-    valueExpr="id"
-    [value]="selectedId"
-    (onValueChanged)="onSymbolChange($event)"
-    placeholder="Выберите валюту"
-  ></dx-select-box>
+<div class="converter-container">
+  <dx-toolbar>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      locateInMenu="auto"
+      [options]="refreshButtonOptions"
+    >
+    </dxi-item>
 
-  <dx-number-box
-    [(ngModel)]="amount"
-    placeholder="Введите количество"
-    [min]="0"
-  ></dx-number-box>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      locateInMenu="auto"
+      [options]="resetButtonOptions"
+    >
+    </dxi-item>
+  </dx-toolbar>
 
-  <dx-select-box
-    [items]="['USD', 'EUR', 'GBP']"
-    [(ngModel)]="convertTo"
-    placeholder="Конвертировать в"
-  ></dx-select-box>
+  <!-- Основной горизонтальный контейнер -->
+  <dx-box direction="row" width="100%" height="auto">
+    <!-- Левая зона -->
+    <dxi-item [ratio]="4">
+      <dx-box direction="col" width="100%" class="box-left">
+        <!-- Поле для ввода количества -->
+        <dxi-item [ratio]="1">
+          <dx-box direction="row" width="100%" class="input-group">
+            <dxi-item [ratio]="1">
+              <dx-number-box
+                [(value)]="amount"
+                (onValueChanged)="onParameterChange()"
+                [min]="1"
+                [placeholder]="'Введите количество'"
+                [showSpinButtons]="true"
+                width="100px"
+              ></dx-number-box>
+            </dxi-item>
+            <dxi-item [ratio]="3">
+              <dx-select-box
+                [items]="currencies"
+                displayExpr="name"
+                valueExpr="id"
+                [(value)]="selectedId"
+                (onValueChanged)="onSymbolChange($event)"
+                [placeholder]="'Выберите валюту'"
+                class="currency-select"
+              ></dx-select-box>
+            </dxi-item>
+          </dx-box>
+        </dxi-item>
 
-  <button (click)="convert()">Конвертировать</button>
+        <dxi-item [ratio]="1">
+          <div class="info">
+            1 {{ selectedCurrencySymbol }} = {{ selectedCurrencyPrice }} {{ convertTo }}
+          </div>
+        </dxi-item>
+      </dx-box>
+    </dxi-item>
+    <dxi-item [ratio]="1">
+      <dx-button icon="codeblock"></dx-button>
+    </dxi-item>
+    <!-- Правая зона -->
+    <dxi-item [ratio]="4">
+      <dx-box direction="col" width="100%" class="box-right">
+        <dxi-item [ratio]="1">
+          <dx-box direction="row" width="100%" class="input-group">
+            <dxi-item [ratio]="1">
+                <dx-select-box
+                  [items]="currencies"
+                  [(value)]="convertTo"
+                  (onValueChanged)="onParameterChange()"
+                  [placeholder]="'Выберите валюту'"
+                  class="currency-select"
+                ></dx-select-box>
+            </dxi-item>
+            <dxi-item [ratio]="4" class="result">
+                {{ convertedPrice || '0.00' }} {{ convertTo }}
+            </dxi-item>
+          </dx-box>
+        </dxi-item>
 
-  <div *ngIf="convertedPrice !== null">
-    <p>Результат: {{ convertedPrice }} {{ convertTo }}</p>
-  </div>
+        <!-- Подсказка с информацией о текущей обратной цене -->
+        <dxi-item [ratio]="1" class="info">
+            1 {{ convertTo }} = {{ reverseCurrencyPrice }} {{ selectedCurrencySymbol }}
+        </dxi-item>
+      </dx-box>
+    </dxi-item>
+  </dx-box>
 </div>

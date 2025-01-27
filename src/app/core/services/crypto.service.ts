@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Cryptocurrency, ApiCryptocurrency} from "../models/cryptocurrency.model";
-import {catchError, map, Observable, throwError} from "rxjs";
+import {catchError, forkJoin, map, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -81,5 +81,36 @@ export class CryptoService {
           return throwError(() => new Error('Не удалось выполнить конвертацию. Пожалуйста, проверьте соединение.'));
         }),
       );
+  }
+
+  getAllCurrencies(): Observable<{ id: string, symbol: string; name: string }[]> {
+    const fiatUrl = `${this.API_URL}/fiat/map`;
+    const cryptoUrl = `${this.API_URL}/cryptocurrency/map`;
+
+    const headers = {
+      'X-CMC_PRO_API_KEY': this.API_KEY,
+    };
+
+    // Параллельные запросы: фиатные и криптовалюты
+    return forkJoin([
+      this.http.get<{ data: any[] }>(fiatUrl, { headers }),
+      this.http.get<{ data: any[] }>(cryptoUrl, { headers }),
+    ]).pipe(
+      map(([fiatResponse, cryptoResponse]) => {
+        const fiatCurrencies = fiatResponse.data.map((fiat) => ({
+          id: fiat.id,
+          symbol: fiat.symbol,
+          name: fiat.name,
+        }));
+
+        const cryptoCurrencies = cryptoResponse.data.map((crypto) => ({
+          id: crypto.id,
+          symbol: crypto.symbol,
+          name: crypto.name,
+        }));
+
+        return [...fiatCurrencies, ...cryptoCurrencies];
+      })
+    );
   }
 }
