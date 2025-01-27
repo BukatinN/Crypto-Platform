@@ -83,18 +83,27 @@ export class CryptoService {
       );
   }
 
-  getAllCurrencies(): Observable<{ id: string, symbol: string; name: string }[]> {
-    const fiatUrl = `${this.API_URL}/fiat/map`;
-    const cryptoUrl = `${this.API_URL}/cryptocurrency/map`;
+  getAllCurrencies(): Observable<{ type: string; items: { id: string; symbol: string; name: string }[] }[]> {
+    const fiatUrl = `${this.API_URL}/v1/fiat/map`;
+    const cryptoUrl = `${this.API_URL}/v1/cryptocurrency/map`;
 
     const headers = {
       'X-CMC_PRO_API_KEY': this.API_KEY,
     };
 
-    // Параллельные запросы: фиатные и криптовалюты
     return forkJoin([
-      this.http.get<{ data: any[] }>(fiatUrl, { headers }),
-      this.http.get<{ data: any[] }>(cryptoUrl, { headers }),
+      this.http.get<{ data: any[] }>(fiatUrl, {
+        headers,
+        params: {
+          sort: 'id',
+        },
+      }),
+      this.http.get<{ data: any[] }>(cryptoUrl, {
+        headers,
+        params: {
+          limit: '200',
+        },
+      }),
     ]).pipe(
       map(([fiatResponse, cryptoResponse]) => {
         const fiatCurrencies = fiatResponse.data.map((fiat) => ({
@@ -109,8 +118,11 @@ export class CryptoService {
           name: crypto.name,
         }));
 
-        return [...fiatCurrencies, ...cryptoCurrencies];
-      })
+        return [
+          { type: 'crypto', items: cryptoCurrencies },
+          { type: 'fiat', items: fiatCurrencies },
+        ];
+      }),
     );
   }
 }

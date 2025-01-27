@@ -30,7 +30,7 @@
                 [(value)]="amount"
                 (onValueChanged)="onParameterChange()"
                 [min]="1"
-                [placeholder]="'Введите количество'"
+                [placeholder]="'Enter quantity'"
                 [showSpinButtons]="true"
                 width="100px"
               ></dx-number-box>
@@ -42,46 +42,55 @@
                 valueExpr="id"
                 [(value)]="selectedId"
                 (onValueChanged)="onSymbolChange($event)"
-                [placeholder]="'Выберите валюту'"
+                [placeholder]="'Select currency'"
+                [searchEnabled]="true"
+                [grouped]="true"
+                groupTemplate="group"
                 class="currency-select"
-              ></dx-select-box>
+              >
+                <div *dxTemplate="let group of 'group'">
+                  <b>{{ group.type === 'fiat' ? 'Fiat currency' : 'Crypto currency' }}</b>
+                </div>
+                <!-- Шаблон для элементов -->
+                <div *dxTemplate="let data of 'item'">
+                  {{ data.name }} ({{ data.symbol }})
+                </div>
+              </dx-select-box>
             </dxi-item>
           </dx-box>
         </dxi-item>
 
-        <dxi-item [ratio]="1">
-          <div class="info">
+        <dxi-item [ratio]="1" class="info">
             1 {{ selectedCurrencySymbol }} = {{ selectedCurrencyPrice }} {{ convertTo }}
-          </div>
         </dxi-item>
       </dx-box>
     </dxi-item>
     <dxi-item [ratio]="1">
-      <dx-button icon="codeblock"></dx-button>
+      <dx-button icon="codeblock" width="40"></dx-button>
     </dxi-item>
     <!-- Правая зона -->
     <dxi-item [ratio]="4">
       <dx-box direction="col" width="100%" class="box-right">
         <dxi-item [ratio]="1">
-          <dx-box direction="row" width="100%" class="input-group">
-            <dxi-item [ratio]="1">
-                <dx-select-box
-                  [items]="currencies"
-                  [(value)]="convertTo"
-                  (onValueChanged)="onParameterChange()"
-                  [placeholder]="'Выберите валюту'"
-                  class="currency-select"
-                ></dx-select-box>
-            </dxi-item>
-            <dxi-item [ratio]="4" class="result">
-                {{ convertedPrice || '0.00' }} {{ convertTo }}
-            </dxi-item>
-          </dx-box>
+          <dx-select-box
+            [items]="currencies"
+            displayExpr="name"
+            valueExpr="symbol"
+            [(value)]="convertTo"
+            (onValueChanged)="onParameterChange()"
+            [placeholder]="'Select currency'"
+            [searchEnabled]="true"
+            class="currency-select"
+          ></dx-select-box>
         </dxi-item>
 
         <!-- Подсказка с информацией о текущей обратной цене -->
         <dxi-item [ratio]="1" class="info">
-            1 {{ convertTo }} = {{ reverseCurrencyPrice }} {{ selectedCurrencySymbol }}
+          1 {{ convertTo }} = {{ reverseCurrencyPrice }} {{ selectedCurrencySymbol }}
+        </dxi-item>
+
+        <dxi-item [ratio]="1" class="result">
+          {{ convertedPrice || '0.00' }} {{ convertTo }}
         </dxi-item>
       </dx-box>
     </dxi-item>

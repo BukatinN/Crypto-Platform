@@ -20,3 +20,12 @@ export interface ApiCryptocurrency {
     };
   };
 }
+
+export interface GroupedCurrency {
+  type: string;
+  items: {
+    id: string;
+    symbol: string;
+    name: string
+}
+}

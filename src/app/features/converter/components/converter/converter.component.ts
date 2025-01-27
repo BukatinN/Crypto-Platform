@@ -7,7 +7,7 @@ import {CryptoService} from "../../../../core/services/crypto.service";
   styleUrl: './converter.component.scss',
 })
 export class ConverterComponent  implements OnInit {
-  currencies: { id: string, name: string; symbol: string }[] = [];
+  currencies: { type: string; items: { id: string; symbol: string; name: string }[] }[] = [];
   selectedId: string | null = null;
   amount: number = 1;
   convertTo: string = 'USD';
@@ -15,43 +15,40 @@ export class ConverterComponent  implements OnInit {
   selectedCurrencySymbol: string | null = '';
   selectedCurrencyPrice: number | null = null;
   reverseCurrencyPrice: number | null = null;
+
   refreshButtonOptions = {
     icon: 'refresh',
     text: 'Refresh',
-    onClick: () => this.refreshConverter()
+    onClick: () => this.refreshConverter(),
   };
   resetButtonOptions = {
     icon: 'clear',
     text: 'Reset',
-    onClick: () => this.resetConverter()
+    onClick: () => this.resetConverter(),
   };
 
   constructor(private cryptoService: CryptoService) {}
 
   ngOnInit() {
-    this.cryptoService.getAllCurrencies().subscribe({
-      next: (data) => {
-        this.currencies = data;
-      },
-      error: (err) => {
-        console.error('Ошибка при загрузке валют:', err);
-      },
+    this.cryptoService.getAllCurrencies().subscribe((data) => {
+      this.currencies = data;
     });
   }
 
   onParameterChange(): void {
-    const selectedCurrency = this.currencies.find((crypto) => crypto.id === this.selectedId);
+    const selectedCurrency = this.currencies
+      .flatMap((group) => group.items)
+      .find((currency) => currency.id === this.selectedId);
     this.selectedCurrencySymbol = selectedCurrency?.symbol || '';
-    //this.selectedCurrencyPrice = selectedCurrency?.price || 0;
 
     if (this.selectedId && this.amount && this.convertTo) {
       this.convert();
     }
-
-    // Рассчитываем обратную цену для подсказки
-    if (this.selectedCurrencyPrice) {
+  /*
+    if (this.convertedPrice) {
+      this.selectedCurrencyPrice = this.convertedPrice / this.amount;
       this.reverseCurrencyPrice = 1 / this.selectedCurrencyPrice;
-    }
+    }*/
   }
 
   convert() {
@@ -59,6 +56,8 @@ export class ConverterComponent  implements OnInit {
       this.cryptoService.priceConversion(this.amount, this.selectedId, null, this.convertTo).subscribe({
         next: (price) => {
           this.convertedPrice = price;
+          this.selectedCurrencyPrice = this.convertedPrice / this.amount;
+          this.reverseCurrencyPrice = 1 / this.selectedCurrencyPrice;
         },
         error: (err) => console.error(err.message),
       });
