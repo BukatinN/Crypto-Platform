@@ -3,12 +3,16 @@
   --border-bg: #e0e0e0;
   --info-col: #888888FF;
   --symb-col: #adadad;
+  --switch-button-bg: #66bbdb;
+  --switch-button-col: #ffffff;
 
   body.dark-theme & {
     --container-bg: #2e549b;
     --border-bg: #213d73;
     --info-col: #979696;
     --symb-col: #adadad;
+    --switch-button-bg: #3f272c;
+    --switch-button-col: #b5b1b1;
   }
 }
 
@@ -57,4 +61,19 @@
   display: flex;
   justify-content: flex-end;
   padding: 10px;
+}
+
+.center-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.switch-button {
+  background-color: var(--switch-button-bg, #66bbdb);
+}
+
+::ng-deep .switch-button .dx-icon {
+  color: var(--switch-button-col, #ffffff) !important;
 }

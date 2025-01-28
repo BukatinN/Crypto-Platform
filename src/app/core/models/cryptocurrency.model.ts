@@ -27,5 +27,5 @@ export interface GroupedCurrency {
     id: string;
     symbol: string;
     name: string
-}
+  }
 }

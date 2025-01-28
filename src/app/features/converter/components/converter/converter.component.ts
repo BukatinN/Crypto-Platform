@@ -7,23 +7,27 @@ import {CryptoService} from "../../../../core/services/crypto.service";
   styleUrl: './converter.component.scss',
 })
 export class ConverterComponent  implements OnInit {
-  currencies: { id: string, name: string; symbol: string }[] = [];
+  currencies: { id: string, name: string; symbol: string, sign: string | null }[] = [];
   selectedId: string | null = null;
   amount: number = 1;
-  convertTo: string = 'USD';
+  convertTo: string | null = 'USD';
+  convertedCurrencySign: string | null = null;
   convertedPrice: number | null = null;
   selectedCurrencySymbol: string | null = '';
+  selectedCurrencySign: string | null = null;
   selectedCurrencyPrice: number | null = null;
   reverseCurrencyPrice: number | null = null;
 
   refreshButtonOptions = {
     icon: 'refresh',
     text: 'Refresh',
+    stylingMode: 'text',
     onClick: () => this.refreshConverter(),
   };
   resetButtonOptions = {
     icon: 'clear',
     text: 'Reset',
+    stylingMode: 'text',
     onClick: () => this.resetConverter(),
   };
 
@@ -37,7 +41,11 @@ export class ConverterComponent  implements OnInit {
 
   onParameterChange(): void {
     const selectedCurrency = this.currencies.find((crypto) => crypto.id === this.selectedId);
-    this.selectedCurrencySymbol = selectedCurrency?.symbol || '';
+    this.selectedCurrencySymbol = selectedCurrency?.symbol || null;
+    this.selectedCurrencySign = selectedCurrency?.sign || null;
+
+    const convertedCurrency = this.currencies.find((crypto) => crypto.symbol === this.convertTo);
+    this.convertedCurrencySign = convertedCurrency?.sign || null;
 
     if (this.selectedId && this.amount && this.convertTo) {
       this.convert();
@@ -65,16 +73,22 @@ export class ConverterComponent  implements OnInit {
   }
 
   refreshConverter(): void {
-    console.log('Refresh clicked');
+    this.onParameterChange();
   }
 
   resetConverter(): void {
     this.amount = 1;
     this.selectedId = null;
     this.selectedCurrencySymbol = null;
+    this.selectedCurrencySign = null;
     this.selectedCurrencyPrice = null;
     this.reverseCurrencyPrice = null;
     this.convertedPrice = null;
     this.convertTo = 'USD';
+  }
+
+  swapCurrencies(): void {
+    this.selectedId = this.currencies.find((crypto) => crypto.symbol === this.convertTo)?.id || null;
+    this.convertTo = this.selectedCurrencySymbol;
   }
 }
