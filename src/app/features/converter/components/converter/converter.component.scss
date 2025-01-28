@@ -2,11 +2,13 @@
   --container-bg: #f9f9f9;
   --border-bg: #e0e0e0;
   --info-col: #888888FF;
+  --symb-col: #adadad;
 
   body.dark-theme & {
     --container-bg: #2e549b;
     --border-bg: #213d73;
     --info-col: #979696;
+    --symb-col: #adadad;
   }
 }
 
@@ -36,6 +38,10 @@
   color: var(--info-col, #ffffff);
   text-align: left;
   margin-top: 5px;
+}
+
+.symbol {
+  color: var(--symb-col, #adadad);
 }
 
 .box-left,

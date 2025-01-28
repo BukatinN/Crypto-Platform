@@ -37,23 +37,19 @@
             </dxi-item>
             <dxi-item [ratio]="3">
               <dx-select-box
-                [items]="currencies"
+                [dataSource]="currencies"
                 displayExpr="name"
                 valueExpr="id"
                 [(value)]="selectedId"
                 (onValueChanged)="onSymbolChange($event)"
                 [placeholder]="'Select currency'"
                 [searchEnabled]="true"
-                [grouped]="true"
-                groupTemplate="group"
+                [searchExpr]="['name', 'symbol']"
+                itemTemplate="item"
                 class="currency-select"
               >
-                <div *dxTemplate="let group of 'group'">
-                  <b>{{ group.type === 'fiat' ? 'Fiat currency' : 'Crypto currency' }}</b>
-                </div>
-                <!-- Шаблон для элементов -->
                 <div *dxTemplate="let data of 'item'">
-                  {{ data.name }} ({{ data.symbol }})
+                  {{ data.name }} <span class="symbol">({{ data.symbol }})</span>
                 </div>
               </dx-select-box>
             </dxi-item>

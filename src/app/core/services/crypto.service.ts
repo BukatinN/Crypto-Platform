@@ -83,7 +83,7 @@ export class CryptoService {
       );
   }
 
-  getAllCurrencies(): Observable<{ type: string; items: { id: string; symbol: string; name: string }[] }[]> {
+  getAllCurrencies(): Observable<{ id: string; symbol: string; name: string }[]> {
     const fiatUrl = `${this.API_URL}/v1/fiat/map`;
     const cryptoUrl = `${this.API_URL}/v1/cryptocurrency/map`;
 
@@ -118,10 +118,7 @@ export class CryptoService {
           name: crypto.name,
         }));
 
-        return [
-          { type: 'crypto', items: cryptoCurrencies },
-          { type: 'fiat', items: fiatCurrencies },
-        ];
+        return [...fiatCurrencies, ...cryptoCurrencies];
       }),
     );
   }

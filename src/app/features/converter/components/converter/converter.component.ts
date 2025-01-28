@@ -7,7 +7,7 @@ import {CryptoService} from "../../../../core/services/crypto.service";
   styleUrl: './converter.component.scss',
 })
 export class ConverterComponent  implements OnInit {
-  currencies: { type: string; items: { id: string; symbol: string; name: string }[] }[] = [];
+  currencies: { id: string, name: string; symbol: string }[] = [];
   selectedId: string | null = null;
   amount: number = 1;
   convertTo: string = 'USD';
@@ -36,19 +36,12 @@ export class ConverterComponent  implements OnInit {
   }
 
   onParameterChange(): void {
-    const selectedCurrency = this.currencies
-      .flatMap((group) => group.items)
-      .find((currency) => currency.id === this.selectedId);
+    const selectedCurrency = this.currencies.find((crypto) => crypto.id === this.selectedId);
     this.selectedCurrencySymbol = selectedCurrency?.symbol || '';
 
     if (this.selectedId && this.amount && this.convertTo) {
       this.convert();
     }
-  /*
-    if (this.convertedPrice) {
-      this.selectedCurrencyPrice = this.convertedPrice / this.amount;
-      this.reverseCurrencyPrice = 1 / this.selectedCurrencyPrice;
-    }*/
   }
 
   convert() {
