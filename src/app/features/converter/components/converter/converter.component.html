@@ -60,7 +60,7 @@
         </dxi-item>
 
         <dxi-item [ratio]="1">
-          
+
         </dxi-item>
       </dx-box>
     </dxi-item>
@@ -95,7 +95,7 @@
         </dxi-item>
 
         <dxi-item [ratio]="1" class="result">
-          {{ convertedPrice || '0.00' }} {{ convertTo }}
+            {{ (convertedPrice$ | async) ?? '0.00' }} {{ convertTo }}
         </dxi-item>
       </dx-box>
     </dxi-item>
