@@ -1,5 +1,5 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {Cryptocurrency} from "../../../../core/models/cryptocurrency.model";
+import {Cryptocurrency} from "../../../../core/interfaces/cryptocurrency.interface";
 import {CryptoService} from "../../../../core/services/crypto.service";
 import {dxDataGridColumn } from 'devextreme/ui/data_grid';
 import {map, Observable, tap} from "rxjs";
@@ -25,7 +25,6 @@ export class CryptoListComponent {
       width: 200,
     },
   ];
-  loading: boolean = false;
 
   constructor( private cryptoServices: CryptoService) {
     this.cryptocurrencies$ = this.cryptoServices.getCryptoCurrencies()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Cryptocurrency, ApiCryptocurrency} from "../models/cryptocurrency.model";
-import {catchError, forkJoin, map, Observable, throwError} from "rxjs";
+import {Cryptocurrency, ApiCryptocurrency} from "../interfaces/cryptocurrency.interface";
+import {catchError, combineLatest, filter, forkJoin, map, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -55,27 +55,28 @@ export class CryptoService {
       convert,
     };
 
-    if (id) {
-      params['id'] = id;
-    } else if (symbol) {
-      params['symbol'] = symbol;
-    } else {
-      throw new Error('Необходимо указать либо id, либо symbol.');
+    switch (true) {
+      case !!id:
+        params['id'] = id;
+        break;
+      case !!symbol:
+        params['symbol'] = symbol;
+        break;
+      default:
+        throw new Error('Необходимо указать либо id, либо symbol.');
     }
 
-    return this.http.get<{ data: { quote: { [key: string]: { price: number } } } }>(`${this.API_URL}/v2/tools/price-conversion`, {
+    return this.http.get<{
+      data: { quote: { [key: string]: { price: number } } }
+    }>(`${this.API_URL}/v2/tools/price-conversion`, {
       headers: {
         'X-CMC_PRO_API_KEY': this.API_KEY,
       },
-      params })
+      params,
+    })
       .pipe(
-        map(response => {
-          const conversion = response.data.quote[convert];
-          if (conversion) {
-            return conversion.price;
-          }
-          throw new Error('Конвертация не выполнена. Проверьте параметры запроса.');
-        }),
+        filter(response => !!response.data.quote[convert]),
+        map(response => response.data.quote[convert].price),
         catchError((error: HttpErrorResponse) => {
           console.error('Ошибка при конвертации цены:', error);
           return throwError(() => new Error('Не удалось выполнить конвертацию. Пожалуйста, проверьте соединение.'));
@@ -91,7 +92,7 @@ export class CryptoService {
       'X-CMC_PRO_API_KEY': this.API_KEY,
     };
 
-    return forkJoin([
+    return combineLatest([
       this.http.get<{ data: any[] }>(fiatUrl, {
         headers,
         params: {

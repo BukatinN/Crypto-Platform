@@ -1,0 +1,50 @@
+<div class="transactions">
+  <h2>Recent Transactions</h2>
+
+  <dx-data-grid
+    [dataSource]="transactions$ | async"
+    [showBorders]="true"
+    [rowAlternationEnabled]="true"
+    [columnAutoWidth]="true"
+    [paging]="{ pageSize: 5 }"
+  >
+    <dxo-paging [enabled]="true"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]"></dxo-pager>
+
+    <dxi-column dataField="type" caption="Type"></dxi-column>
+    <dxi-column dataField="amount" caption="Amount"></dxi-column>
+    <dxi-column
+      dataField="price"
+      caption="Price"
+      [format]="{ type: 'currency', currency: 'USD' }"
+    ></dxi-column>
+    <dxi-column
+      dataField="date"
+      caption="Date"
+      [dataType]="'datetime'"
+      [format]="{ type: 'longDate' }"
+    ></dxi-column>
+  </dx-data-grid>
+
+  <h3>Buy/Sell Tokens</h3>
+  <form>
+    <label>
+      Token:
+      <select [(ngModel)]="selectedTokenId" name="token">
+        <option *ngFor="let token of tokens$ | async" [value]="token.id">
+          {{ token.name }} ({{ token.symbol }})
+        </option>
+      </select>
+    </label>
+    <label>
+      Amount:
+      <input type="number" [(ngModel)]="amount" name="amount" />
+    </label>
+    <label>
+      Price:
+      <input type="number" [(ngModel)]="price" name="price" />
+    </label>
+    <button type="button" (click)="buy()">Buy</button>
+    <button type="button" (click)="sell()">Sell</button>
+  </form>
+</div>

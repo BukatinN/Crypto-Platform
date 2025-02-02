@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
-import {Subject, takeUntil} from "rxjs";
+import {filter, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-main-panel',
@@ -20,13 +20,14 @@ export class MainPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.router.events
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      )
       .subscribe((event) => {
-      if (event instanceof NavigationEnd) {
         this.selectedIndex = this.menuItems.findIndex(
           (item) => item.route === event.urlAfterRedirects,
         );
-      }
     });
   }
 

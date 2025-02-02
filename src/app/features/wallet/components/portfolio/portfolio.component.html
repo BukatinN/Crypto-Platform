@@ -1,0 +1,14 @@
+<div class="portfolio">
+  <h2>Portfolio Value</h2>
+  <p class="value">{{ totalPortfolio$ | async | currency:'USD' }}</p>
+
+  <dx-data-grid
+    [dataSource]="tokens$ | async"
+    [columns]="portfolioColumns"
+    [showBorders]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-paging [enabled]="true" [pageSize]="5"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]"></dxo-pager>
+  </dx-data-grid>
+</div>
